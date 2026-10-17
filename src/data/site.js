@@ -55,7 +55,7 @@ export const HOME = {
   pasos: [
     { n: '01', t: 'Conversamos', d: 'Entendemos cómo funciona tu negocio y qué te está frenando.' },
     { n: '02', t: 'Propuesta clara', d: 'Te explicamos qué proponemos y por qué, en palabras simples.' },
-    { n: '03', t: 'Prueba', d: 'Cuando se puede, te mostramos algo funcionando antes de avanzar.' },
+        { n: '03', t: 'Prueba', d: 'Cuando tiene sentido, probamos primero: te mostramos algo funcionando para que veas si realmente te sirve antes de avanzar.' },
     { n: '04', t: 'Puesta en marcha', d: 'Lo dejamos andando y te enseñamos a usarlo.' },
     { n: '05', t: 'Seguimiento', d: 'Revisamos que funcione y seguimos mejorando con vos.' },
   ],

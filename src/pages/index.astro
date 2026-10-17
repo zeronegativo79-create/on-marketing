@@ -46,7 +46,7 @@ const crumbs = {
       <div class="hero__text reveal">
         <p class="eyebrow">MARKETING DIGITAL · IA · AUTOMATIZACIÓN</p>
         <h1 class="hero__title">Que más gente <span class="grad">encuentre</span><br />tu negocio.</h1>
-        <p class="lead">Ordenamos tu presencia digital para que te encuentren en Google, tu negocio se vea profesional y ninguna consulta se pierda.</p>
+        <p class="lead">Ordenamos tu presencia digital para que te encuentren, confíen en vos y puedan contactarte.</p>
         <div class="actions">
           <a class="btn btn--primary" href={ctaHref()} {...ext}>Hablemos →</a>
           <a class="btn btn--ghost" href="#como-trabajamos">Cómo trabajamos ↓</a>
@@ -111,7 +111,8 @@ const crumbs = {
             <div><h3>{p.t}</h3><p>{p.d}</p></div>
           </li>
         ))}
-      </ol>
+      </ol>      
+      <p class="highlight reveal">No queremos venderte algo que no necesitás. Primero vemos si funciona para vos.</p>
     </div>
   </section>
 
@@ -132,7 +133,7 @@ const crumbs = {
     <div class="container">
       <p class="eyebrow">POR QUÉ ON</p>
       <h2 id="t-porque" class="big">No vendemos herramientas, diseñamos <span class="grad">soluciones</span>.</h2>
-      <p class="lead">Como con un mecánico: no pagás el repuesto, pagás saber cuál es el problema y resolverlo bien.</p>
+      <p class="lead">Como con un mecánico: no te importa qué herramienta usa, querés que encuentre el problema y te devuelva el auto funcionando. Nosotros hacemos lo mismo con tu negocio.</p>
       <div class="grid grid--4">
         {HOME.porQue.map((c) => (
           <article class="card reveal"><span class="card__icon"><Icon name="check" /></span><h3>{c.t}</h3><p>{c.d}</p></article>
@@ -144,7 +145,7 @@ const crumbs = {
   <section class="section" id="para-quien" aria-labelledby="t-quien">
     <div class="container">
       <p class="eyebrow">PARA QUIÉN</p>
-      <h2 id="t-quien">Pensado para negocios como el <span class="grad">tuyo</span>.</h2>
+      <h2 id="t-quien">Pensado para negocios que quieren crecer sin <span class="grad">complicarse</span>.</h2>
       <p class="lead">Trabajamos con negocios locales y profesionales que quieren ordenarse y ser más fáciles de encontrar.</p>
       <ul class="tags tags--lg">{HOME.rubros.map((r) => <li>{r}</li>)}</ul>
     </div>

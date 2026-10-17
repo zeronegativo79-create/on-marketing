@@ -1,0 +1,189 @@
+---
+// src/pages/index.astro
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { SITE, HOME, whatsappUrl, ctaHref } from '../data/site.js';
+import { SERVICIOS } from '../data/servicios.js';
+import { FAQ } from '../data/faq.js';
+
+const wa = whatsappUrl();
+const ext = wa ? { target: '_blank', rel: 'noopener' } : {};
+const site = Astro.site.href.replace(/\/$/, '');
+
+const org = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: SITE.name,
+  url: site,
+  description: SITE.description,
+  logo: `${site}/favicon.svg`,
+  ...(SITE.email && { email: SITE.email }),
+  ...(SITE.instagram && { sameAs: [SITE.instagram] }),
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Servicios',
+    itemListElement: SERVICIOS.map((s) => ({
+      '@type': 'Offer',
+      itemOffered: { '@type': 'Service', name: s.nombre, url: `${site}/servicios/${s.slug}` },
+    })),
+  },
+};
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: FAQ.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+const crumbs = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: `${site}/` }],
+};
+---
+<Base title="Marketing digital para pequeños negocios" description={SITE.description} path="/" jsonld={[org, faqLd, crumbs]}>
+
+  <section class="hero">
+    <div class="container hero__grid">
+      <div class="hero__text reveal">
+        <p class="eyebrow">MARKETING DIGITAL · IA · AUTOMATIZACIÓN</p>
+        <h1 class="hero__title">Que más gente <span class="grad">encuentre</span><br />tu negocio.</h1>
+        <p class="lead">Ordenamos tu presencia digital para que te encuentren en Google, tu negocio se vea profesional y ninguna consulta se pierda.</p>
+        <div class="actions">
+          <a class="btn btn--primary" href={ctaHref()} {...ext}>Hablemos →</a>
+          <a class="btn btn--ghost" href="#como-trabajamos">Cómo trabajamos ↓</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="punto-de-partida" aria-labelledby="t-dolor">
+    <div class="container">
+      <p class="eyebrow">EL PUNTO DE PARTIDA</p>
+      <h2 id="t-dolor">¿Te pasa <span class="grad">algo</span> de esto?</h2>
+      <p class="lead">Si a tu negocio le cuesta que lo encuentren, que le consulten o no perder mensajes, empezamos por ahí.</p>
+      <div class="grid grid--3">
+        {HOME.dolores.map((d) => (
+          <article class="card reveal"><h3>{d.t}</h3><p>{d.d}</p></article>
+        ))}
+      </div>
+      <ul class="tags" aria-label="Otras situaciones frecuentes">
+        {HOME.etiquetasDolor.map((t) => <li>{t}</li>)}
+      </ul>
+      <p class="highlight reveal">Contanos qué te quita tiempo y vemos cómo simplificarlo.</p>
+    </div>
+  </section>
+
+  <section class="section" id="servicios" aria-labelledby="t-serv">
+    <div class="container">
+      <div class="split">
+        <div>
+          <p class="eyebrow">QUÉ HACEMOS</p>
+          <h2 id="t-serv">Soluciones simples para que tu negocio se vea y se <span class="grad">encuentre</span>.</h2>
+        </div>
+        <div>
+          <p class="lead">Entendemos cómo funciona tu negocio y armamos solo lo que realmente necesitás.</p>
+          <a class="btn btn--ghost" href={ctaHref()} {...ext}>Contanos tu caso →</a>
+        </div>
+      </div>
+      <ul class="grid grid--3 services">
+        {SERVICIOS.map((s) => (
+          <li class="reveal">
+            <a class="card card--link" href={`/servicios/${s.slug}`}>
+              <span class="card__icon"><Icon name={s.icono} /></span>
+              <h3>{s.nombre}</h3>
+              <p>{s.linea}</p>
+              <span class="card__more" aria-hidden="true">Ver más →</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="como-trabajamos" aria-labelledby="t-como">
+    <div class="container">
+      <p class="eyebrow">CÓMO TRABAJAMOS</p>
+      <h2 id="t-como">Así trabajamos, sin <span class="grad">vueltas</span>.</h2>
+      <p class="lead">Primero entendemos tu negocio, después te proponemos algo claro y lo dejamos funcionando con vos.</p>
+      <ol class="timeline">
+        {HOME.pasos.map((p) => (
+          <li class="timeline__item reveal">
+            <span class="timeline__n">{p.n}</span>
+            <div><h3>{p.t}</h3><p>{p.d}</p></div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  {HOME.proyecto && (
+    <section class="section" id="proyecto" aria-labelledby="t-proy">
+      <div class="container">
+        <p class="eyebrow">UN PROYECTO</p>
+        <article class="card card--project reveal">
+          <h2 id="t-proy">{HOME.proyecto.titulo}</h2>
+          <p class="lead">{HOME.proyecto.texto}</p>
+          <a class="btn btn--ghost" href={HOME.proyecto.url} target="_blank" rel="noopener">Ver el sitio →</a>
+        </article>
+      </div>
+    </section>
+  )}
+
+  <section class="section" id="por-que-on" aria-labelledby="t-porque">
+    <div class="container">
+      <p class="eyebrow">POR QUÉ ON</p>
+      <h2 id="t-porque" class="big">No vendemos herramientas, diseñamos <span class="grad">soluciones</span>.</h2>
+      <p class="lead">Como con un mecánico: no pagás el repuesto, pagás saber cuál es el problema y resolverlo bien.</p>
+      <div class="grid grid--4">
+        {HOME.porQue.map((c) => (
+          <article class="card reveal"><span class="card__icon"><Icon name="check" /></span><h3>{c.t}</h3><p>{c.d}</p></article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="para-quien" aria-labelledby="t-quien">
+    <div class="container">
+      <p class="eyebrow">PARA QUIÉN</p>
+      <h2 id="t-quien">Pensado para negocios como el <span class="grad">tuyo</span>.</h2>
+      <p class="lead">Trabajamos con negocios locales y profesionales que quieren ordenarse y ser más fáciles de encontrar.</p>
+      <ul class="tags tags--lg">{HOME.rubros.map((r) => <li>{r}</li>)}</ul>
+    </div>
+  </section>
+
+  <section class="section" id="preguntas" aria-labelledby="t-faq">
+    <div class="container">
+      <p class="eyebrow">PREGUNTAS FRECUENTES</p>
+      <h2 id="t-faq">Lo que más nos <span class="grad">preguntan</span>.</h2>
+      <div class="faq">
+        {FAQ.map((f) => (
+          <details class="faq__item"><summary>{f.q}</summary><p>{f.a}</p></details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section contact" id="contacto" aria-labelledby="t-contacto">
+    <div class="container">
+      <p class="eyebrow">HABLEMOS</p>
+      <h2 id="t-contacto">Tu negocio ya existe. Hagamos que más personas lo <span class="grad">encuentren</span>.</h2>
+      <p class="lead">Contanos qué te gustaría mejorar y te decimos por dónde empezar.</p>
+
+      {wa
+        ? <a class="btn btn--primary btn--lg" href={wa} target="_blank" rel="noopener">Escribinos por WhatsApp</a>
+        : <p class="pending">[PENDIENTE: número de WhatsApp en PUBLIC_WHATSAPP]</p>}
+
+      {SITE.formEndpoint ? (
+        <form class="form" action={SITE.formEndpoint} method="POST">
+          {SITE.formAccessKey && <input type="hidden" name="access_key" value={SITE.formAccessKey} />}
+          <input type="hidden" name="subject" value="Consulta desde la web de ON Marketing Digital" />
+          <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <label>Nombre<input name="nombre" autocomplete="name" required /></label>
+          <label>Mail<input type="email" name="email" autocomplete="email" required /></label>
+          <label>Contanos qué necesitás<textarea name="mensaje" rows="5" required></textarea></label>
+          <button class="btn btn--primary" type="submit">Enviar</button>
+          <p class="small muted">Usamos tus datos solo para responderte. <a href="/privacidad">Política de privacidad</a>.</p>
+        </form>
+            ) : null}
+    
+  </section>
+</Base>

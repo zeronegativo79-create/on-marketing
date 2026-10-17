@@ -1,0 +1,74 @@
+---
+// src/pages/servicios/[slug].astro
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import { SERVICIOS } from '../../data/servicios.js';
+import { SITE, whatsappUrl, ctaHref } from '../../data/site.js';
+
+export function getStaticPaths() {
+  return SERVICIOS.map((s) => ({ params: { slug: s.slug }, props: { s } }));
+}
+const { s } = Astro.props;
+const site = Astro.site.href.replace(/\/$/, '');
+const url = `${site}/servicios/${s.slug}`;
+const wa = whatsappUrl(`Hola, vengo de la web de ON Marketing Digital y quisiera consultar por ${s.nombre}...`);
+const href = wa ?? ctaHref();
+const ext = wa ? { target: '_blank', rel: 'noopener' } : {};
+
+const jsonld = [
+  {
+    '@context': 'https://schema.org', '@type': 'Service',
+    name: s.nombre, description: s.seoDescription, url, serviceType: s.nombre,
+    provider: { '@type': 'ProfessionalService', name: SITE.name, url: site },
+  },
+  {
+    '@context': 'https://schema.org', '@type': 'FAQPage',
+    mainEntity: s.faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  },
+  {
+    '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${site}/` },
+      { '@type': 'ListItem', position: 2, name: 'Servicios', item: `${site}/#servicios` },
+      { '@type': 'ListItem', position: 3, name: s.nombre, item: url },
+    ],
+  },
+];
+---
+<Base title={s.seoTitle} description={s.seoDescription} path={`/servicios/${s.slug}`} jsonld={jsonld}>
+  <section class="hero hero--page">
+    <div class="container">
+      <nav class="crumbs" aria-label="Ruta"><a href="/">Inicio</a> / <a href="/#servicios">Servicios</a> / <span aria-current="page">{s.nombre}</span></nav>
+      <span class="card__icon card__icon--lg"><Icon name={s.icono} size={32} /></span>
+      <h1>{s.nombre.split(' ').slice(0, -1).join(' ')} <span class="grad">{s.nombre.split(' ').slice(-1)[0]}</span></h1>
+      <p class="lead">{s.resumen}</p>
+    </div>
+  </section>
+
+  <div class="container page">
+    <section aria-labelledby="t-que"><p class="eyebrow">QUÉ ES</p><h2 id="t-que">En palabras simples</h2>{s.queEs.map((p) => <p>{p}</p>)}</section>
+
+    <section aria-labelledby="t-quien"><p class="eyebrow">PARA QUIÉN</p><h2 id="t-quien">¿Es para vos?</h2>
+      <ul class="checks">{s.paraQuien.map((i) => <li><Icon name="check" size={18} />{i}</li>)}</ul></section>
+
+    <section aria-labelledby="t-como"><p class="eyebrow">CÓMO LO HACEMOS</p><h2 id="t-como">Paso a paso</h2>
+      <ol class="timeline">{s.pasos.map((p, i) => (
+        <li class="timeline__item"><span class="timeline__n">{String(i + 1).padStart(2, '0')}</span><div><h3>{p.t}</h3><p>{p.d}</p></div></li>
+      ))}</ol></section>
+
+    <section aria-labelledby="t-inc"><p class="eyebrow">QUÉ INCLUYE</p><h2 id="t-inc">Lo que armamos</h2>
+      <ul class="checks">{s.incluye.map((i) => <li><Icon name="check" size={18} /><span class={i.startsWith('[PENDIENTE') ? 'pending' : ''}>{i}</span></li>)}</ul></section>
+
+    <section aria-labelledby="t-faq"><p class="eyebrow">PREGUNTAS</p><h2 id="t-faq">Preguntas frecuentes</h2>
+      <div class="faq">{s.faq.map((f) => <details class="faq__item"><summary>{f.q}</summary><p class={f.a.startsWith('[PENDIENTE') ? 'pending' : ''}>{f.a}</p></details>)}</div></section>
+
+    <section class="card cta-box">
+      <h2>¿Lo hablamos?</h2>
+      <p>Contanos qué necesitás y te decimos por dónde empezar.</p>
+      <a class="btn btn--primary" href={href} {...ext}>Escribinos →</a>
+    </section>
+
+    <nav aria-label="Otros servicios"><p class="eyebrow">OTROS SERVICIOS</p>
+      <ul class="tags">{SERVICIOS.filter((o) => o.slug !== s.slug).map((o) => <li><a href={`/servicios/${o.slug}`}>{o.nombre}</a></li>)}</ul></nav>
+  </div>
+</Base>

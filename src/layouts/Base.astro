@@ -1,0 +1,88 @@
+---
+// src/layouts/Base.astro
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE } from '../data/site.js';
+
+const { title, description, path = Astro.url.pathname, noindex = false, jsonld = [] } = Astro.props;
+const fullTitle = title ? `${title} | ${SITE.name}` : SITE.name;
+const canonical = new URL(path, Astro.site).href;
+const ogImage = SITE.ogImage ? new URL(SITE.ogImage, Astro.site).href : null;
+---
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#060908" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_AR" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    {jsonld.map((d) => <script type="application/ld+json" set:html={JSON.stringify(d)} />)}
+  </head>
+  <button class="to-top" type="button" aria-label="Volver arriba">↑</button>
+
+<script>
+  const toTop = document.querySelector('.to-top');
+  const items = [...document.querySelectorAll('.nav ul a')]
+    .map((a) => ({ a, el: document.getElementById((a.getAttribute('href') || '').split('#')[1]) }))
+    .filter((x) => x.el);
+
+  function update() {
+    const y = window.scrollY;
+    toTop?.classList.toggle('is-visible', y > 500);
+
+    let current = null;
+    for (const it of items) {
+      if (it.el.getBoundingClientRect().top + y <= y + 140) current = it;
+    }
+    if (window.innerHeight + y >= document.documentElement.scrollHeight - 4 && items.length) {
+      current = items[items.length - 1];
+    }
+    items.forEach((it) => {
+      const on = it === current;
+      it.a.classList.toggle('is-active', on);
+      if (on) it.a.setAttribute('aria-current', 'true');
+      else it.a.removeAttribute('aria-current');
+    });
+  }
+
+  toTop?.addEventListener('click', () => window.scrollTo({ top: 0 }));
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+</script>
+
+  <body>
+    <a class="skip" href="#main">Saltar al contenido</a>
+    <Header />
+    <main id="main"><slot /></main>
+    <Footer />
+    <script>
+      const els = document.querySelectorAll('.reveal');
+      if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        els.forEach((el) => el.classList.add('is-in'));
+      } else {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
+        }, { rootMargin: '0px 0px -10% 0px' });
+        els.forEach((el) => io.observe(el));
+      }
+    </script>
+  </body>
+</html>

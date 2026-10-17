@@ -1,0 +1,25 @@
+---
+// src/pages/privacidad.astro
+import Base from '../layouts/Base.astro';
+import { SITE } from '../data/site.js';
+const site = Astro.site.href.replace(/\/$/, '');
+const crumbs = {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${site}/` },
+    { '@type': 'ListItem', position: 2, name: 'Privacidad', item: `${site}/privacidad` },
+  ],
+};
+---
+<Base title="Política de privacidad" description={`Cómo usa ${SITE.name} los datos que nos dejás en el formulario de contacto.`} path="/privacidad" jsonld={[crumbs]}>
+  <section class="hero hero--page">
+    <div class="container container--narrow">
+      <h1>Política de privacidad</h1>
+      <p class="lead">Usamos tus datos solo para responder tu consulta.</p>
+    </div>
+  </section>
+  <div class="container container--narrow page">
+    <p class="pending">[PENDIENTE: texto legal revisado]</p>
+    <p>Responsable: {SITE.name}. Contacto: {SITE.email || '[PENDIENTE: correo]'}.</p>
+  </div>
+</Base>

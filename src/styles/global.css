@@ -264,3 +264,8 @@ html.js .reveal.is-in { opacity: 1; transform: none; }
 .footer__copy { font-size: .8rem; letter-spacing: .02em; }
 .hero { background-blend-mode: normal, lighten; }
 .cta-box { background: none; border: 0; padding: 1rem 0; }
+.form__status { margin: 0; font-weight: 500; }
+.form__status:empty { display: none; }
+.form__status.is-ok { color: var(--acc); font-size: 1.1rem; }
+.form__status.is-error { color: #FFD166; }
+.form.is-sent > *:not(.form__status) { display: none; }

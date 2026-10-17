@@ -173,7 +173,7 @@ const crumbs = {
         : <p class="pending">[PENDIENTE: número de WhatsApp en PUBLIC_WHATSAPP]</p>}
 
       {SITE.formEndpoint ? (
-        <form class="form" action={SITE.formEndpoint} method="POST">
+        <form class="form" id="contact-form" action={SITE.formEndpoint} method="POST">
           {SITE.formAccessKey && <input type="hidden" name="access_key" value={SITE.formAccessKey} />}
           <input type="hidden" name="subject" value="Consulta desde la web de ON Marketing Digital" />
           <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
@@ -182,8 +182,43 @@ const crumbs = {
           <label>Contanos qué necesitás<textarea name="mensaje" rows="5" required></textarea></label>
           <button class="btn btn--primary" type="submit">Enviar</button>
           <p class="small muted">Usamos tus datos solo para responderte. <a href="/privacidad">Política de privacidad</a>.</p>
-        </form>
+        <p class="form__status" id="form-status" role="status" aria-live="polite"></p></form>
             ) : null}
     
-  </section>
+  </section>  <script>
+    const form = document.getElementById('contact-form');
+    if (form) {
+      const status = document.getElementById('form-status');
+      const button = form.querySelector('button[type="submit"]');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const originalText = button.textContent;
+        button.disabled = true;
+        button.textContent = 'Enviando…';
+        status.textContent = '';
+        status.className = 'form__status';
+        try {
+          const res = await fetch(form.action, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify(Object.fromEntries(new FormData(form))),
+          });
+          const data = await res.json();
+          if (res.ok && data.success !== false) {
+            form.reset();
+            form.classList.add('is-sent');
+            status.textContent = '¡Gracias! Recibimos tu consulta y te vamos a responder por mail.';
+            status.classList.add('is-ok');
+          } else {
+            throw new Error('error');
+          }
+        } catch (err) {
+          status.textContent = 'No pudimos enviar el mensaje. Probá de nuevo o escribinos por WhatsApp.';
+          status.classList.add('is-error');
+          button.disabled = false;
+          button.textContent = originalText;
+        }
+      });
+    }
+  </script>
 </Base>

@@ -6,7 +6,7 @@ export const SITE = {
   shortName: 'ON',
   tagline: 'Hacemos que te encuentren.',
   description:
-    'Ordenamos tu presencia digital para que te encuentren en Google, tu negocio se vea profesional y ninguna consulta se pierda. Para pequeños negocios, comercios y profesionales de Argentina.',
+    'Ordenamos tu presencia digital para que te encuentren, confíen en vos y puedan contactarte. Para pequeños negocios, comercios y profesionales de Argentina.',
   zona: 'Buenos Aires, Argentina',
   ogImage: '', // PENDIENTE: ruta a una imagen 1200x630 en /public, ej. '/og.png'
   whatsapp: (env.PUBLIC_WHATSAPP || '').replace(/\D/g, ''),

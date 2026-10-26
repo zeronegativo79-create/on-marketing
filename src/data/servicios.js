@@ -216,6 +216,41 @@ export const SERVICIOS = [
       { q: '¿Puedo seguir respondiendo yo?', a: 'Sí. Lo automático te ayuda con lo repetitivo; las conversaciones siguen siendo tuyas.' },
     ],
   },
+  {
+    slug: 'apps-y-automatizacion',
+    nombre: 'Apps y automatización',
+    icono: 'web', // mientras no exista un ícono propio
+    linea: 'Herramientas a medida para que dejes de hacer a mano lo que se repite.',
+    seoTitle: 'Apps y automatización a medida para tu negocio',
+    seoDescription: 'Creamos apps simples y automatizaciones a medida para que tu negocio deje de hacer a mano las tareas que se repiten y ordene sus consultas y clientes.',
+    resumen: 'Creamos apps a medida, como un CRM o una herramienta para resolver una necesidad de tu negocio. También automatizamos tareas entre las herramientas que ya usás.',
+    queEs: [
+      'Muchos negocios pierden horas en tareas que se repiten: anotar clientes, copiar datos de un lado a otro, responder siempre lo mismo. Eso se puede ordenar.',
+      'Armamos herramientas a medida, fáciles de usar, que se conectan con lo que ya usás (WhatsApp, Google, hojas de cálculo) y automatizan lo repetitivo. Las conversaciones importantes siguen siendo tuyas.',
+    ],
+    paraQuien: [
+      'Negocios que anotan clientes, pedidos o turnos a mano.',
+      'Quienes copian los mismos datos en varios lugares.',
+      'Profesionales que pierden tiempo respondiendo siempre lo mismo.',
+    ],
+    pasos: [
+      { t: 'Vemos qué te quita tiempo', d: 'Entendemos qué hacés hoy a mano y qué se repite.' },
+      { t: 'Proponemos algo simple', d: 'Solo lo que tenga sentido para tu negocio.' },
+      { t: 'Lo armamos y lo probamos', d: 'Te mostramos algo funcionando antes de avanzar.' },
+      { t: 'Te enseñamos y acompañamos', d: 'Aprendés a usarlo y lo vamos mejorando con vos.' },
+    ],
+    incluye: [
+      'Relevamiento de las tareas que se repiten.',
+      'Automatizaciones entre las herramientas que ya usás.',
+      'Apps simples a medida (por ejemplo, registro de clientes o turnos).',
+      'Acceso seguro y datos a tu nombre, siempre que sea posible.',
+    ],
+    faq: [
+      { q: '¿Necesito saber de tecnología?', a: 'No. Te explicamos todo en simple y te enseñamos a usarlo.' },
+      { q: '¿Mis datos están seguros?', a: 'Cuidamos los permisos y los accesos, y los datos quedan a tu nombre siempre que sea posible. Lo vemos según cada caso.' },
+      { q: '¿Reemplaza mi forma de trabajar?', a: 'No. Automatiza lo repetitivo; las decisiones y las conversaciones importantes siguen siendo tuyas.' },
+    ],
+  },
 ];
 
 export const getServicio = (slug) => SERVICIOS.find((s) => s.slug === slug);
